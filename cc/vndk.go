@@ -488,7 +488,11 @@ func llndkLibrariesTxtFactory() android.SingletonModule {
 // We include llndk_libraries_txt by default to install the llndk.libraries.txt file to system/etc.
 // This singleton module is to install the llndk.libraries.<ver>.txt file to vndk apex.
 func llndkLibrariesTxtApexOnlyFactory() android.SingletonModule {
-	return newVndkLibrariesWithMakeVarFilter(llndkLibraries, "", "libclang_rt.hwasan")
+	m := newVndkLibrariesWithMakeVarFilter(llndkLibraries, "", "libclang_rt.hwasan")
+	// This singleton is consumed directly by the VNDK APEX.  It has no
+	// platform/system install and must not be emitted as an Android.mk module.
+	m.HideFromMake()
+	return m
 }
 
 // vndksp_libraries_txt is a singleton module whose content is a list of VNDKSP libraries
