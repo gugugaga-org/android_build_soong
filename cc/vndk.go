@@ -586,6 +586,9 @@ func (txt *vndkLibrariesTxt) AndroidMkEntries() []android.AndroidMkEntries {
 				// a frozen VNDK snapshot supplies the versioned list there.
 				if txt.makeVarName == "" {
 					entries.SetBool("LOCAL_UNINSTALLABLE_MODULE", true)
+					entries.SetString("LOCAL_SOONG_INSTALLED_MODULE", "")
+					entries.SetString("LOCAL_SOONG_INSTALL_PAIRS", "")
+					entries.SetString("LOCAL_SOONG_INSTALL_SYMLINKS", "")
 				}
 				entries.SetString("LOCAL_MODULE_STEM", txt.outputFile.Base())
 			},
