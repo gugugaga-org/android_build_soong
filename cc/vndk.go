@@ -581,6 +581,12 @@ func (txt *vndkLibrariesTxt) AndroidMkEntries() []android.AndroidMkEntries {
 		OutputFile: android.OptionalPathForPath(txt.outputFile),
 		ExtraEntries: []android.AndroidMkExtraEntriesFunc{
 			func(ctx android.AndroidMkExtraEntriesContext, entries *android.AndroidMkEntries) {
+				// The APEX-only list is consumed by the VNDK APEX itself.  It
+				// must not also create a system/etc install rule, especially when
+				// a frozen VNDK snapshot supplies the versioned list there.
+				if txt.makeVarName == "" {
+					entries.SetBool("LOCAL_UNINSTALLABLE_MODULE", true)
+				}
 				entries.SetString("LOCAL_MODULE_STEM", txt.outputFile.Base())
 			},
 		},
